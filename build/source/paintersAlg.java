@@ -93,7 +93,7 @@ public class paintersAlg extends PApplet {
       shuffle = !shuffle;
       println("shuffle");
     }
-    if (key=='Q' ) {
+    if (key=='w' ) {
         sort = !sort;
         println("sort");
     }
