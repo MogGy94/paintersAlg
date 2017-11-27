@@ -22,9 +22,12 @@ public class TestComparator implements Comparator<PShape> {
 
   @Override
   public int compare(PShape o1, PShape o2) {
-    if (o1>o2)
+    PVector a = o1.getVertex(0);
+    PVector b = o2.getVertex(0);
+
+    if (a.z>b.z)
       return 1;
-    return -1;  
+    return -1;
   }
 
 }
