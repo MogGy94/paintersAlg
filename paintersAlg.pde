@@ -38,7 +38,7 @@ import remixlab.proscene.Scene;
 
     enableZBuffer = false;
     shuffle = false;
-    sort = true;
+    sort = false;
     surface.setTitle("ENABLE_DEPTH_TEST");
     hint(ENABLE_DEPTH_TEST);
 
