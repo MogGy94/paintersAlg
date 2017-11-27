@@ -65,7 +65,7 @@ import remixlab.proscene.Scene;
       shuffle = !shuffle;
       println("shuffle");
     }
-    if (key=='Q' ) {
+    if (key=='w' ) {
         sort = !sort;
         println("sort");
     }
