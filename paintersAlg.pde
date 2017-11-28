@@ -11,14 +11,21 @@ import remixlab.proscene.Scene;
 
   private Random random;
   private Scene scene;
-  private TestComparator testComparator;
+
+  private CompareZ CX;
+  private CompareZ CY;
+  private CompareZ CZ;
+
   private List<PShape> shapes;
 
   private Pyramid[] pyramids;
 
   private boolean enableZBuffer;
   private boolean shuffle;
-  private boolean sort;
+
+  private boolean sortX;
+  private boolean sortY;
+  private boolean sortZ;
 
   @Override
   public void settings() {
@@ -29,16 +36,22 @@ import remixlab.proscene.Scene;
   public void setup() {
     random = new Random();
     scene = new Scene(this);
-    testComparator = new TestComparator(scene.camera());
+
+    CX = new CompareZ(scene.camera());
+    CY = new CompareZ(scene.camera());
+    CZ = new CompareZ(scene.camera());
+
     pyramids = new Pyramid[4*4*4];
     shapes = new ArrayList();
 
     createPyramids(4,4,4);
 
 
-    enableZBuffer = false;
+    enableZBuffer = true;
     shuffle = false;
-    sort = false;
+    sortX = false;
+    sortY = false;
+    sortZ = false;
     surface.setTitle("ENABLE_DEPTH_TEST");
     hint(ENABLE_DEPTH_TEST);
 
@@ -51,7 +64,9 @@ import remixlab.proscene.Scene;
     background(0);
     if(shuffle)Collections.shuffle(shapes);
 
-    if(sort)Collections.sort(shapes, testComparator);
+    if(sortX)Collections.sort(shapes, CX);
+    if(sortY)Collections.sort(shapes, CY);
+    if(sortZ)Collections.sort(shapes, CZ);
 
     for (PShape shape : shapes) {
       shape(shape);
@@ -64,10 +79,25 @@ import remixlab.proscene.Scene;
     if (key=='q' ) {
       shuffle = !shuffle;
       println("shuffle");
+      //if(shuffle)Collections.shuffle(shapes);
     }
-    if (key=='w' ) {
-        sort = !sort;
-        println("sort");
+    if (key=='t' ) {
+        sortX = !sortX;
+        println("sortX "+sortX);
+        //if(sortX)Collections.sort(shapes, CX);
+
+    }
+    if (key=='y' ) {
+        sortY = !sortY;
+        println("sortY "+sortY);
+        //if(sortY)Collections.sort(shapes, CY);
+
+    }
+    if (key=='u' ) {
+        sortZ = !sortZ;
+        println("sortZ "+sortZ);
+        //if(sortZ)Collections.sort(shapes, CZ);
+
     }
 
     if (key==' ' ) {

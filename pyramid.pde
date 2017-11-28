@@ -9,6 +9,7 @@
   PShape face3;
   PShape face4;
 
+
     public  Pyramid (int x, int y, int z) {
        p1 = new PVector(x + random.nextInt(20), y + random.nextInt(10), z);
        p2 = new PVector(x + 10 + random.nextInt(10), y + 10 + random.nextInt(10), z);
@@ -21,6 +22,9 @@
       face4 = createFace(p2,p4,p3);
 
 
+
+      //face5 =
+
       }
     public PShape createFace(PVector k1,PVector k2 ,PVector k3){
       PShape face = createShape();
@@ -31,7 +35,7 @@
       face.endShape();
 
       shapes.add(face);
-      
+
       return face;
     }
   }

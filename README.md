@@ -1,5 +1,5 @@
 # Algoritmo del Pintor
-Estudio del algoritmo del Pintor Realizado Por Oscar Parra y Edilberto Cañon
+Estudio del algoritmo del Pintor Realizado Por **Oscar Parra** y **Edilberto Cañon**
 # Introduccion
 El algoritmo del pintor busca tratar el problema de la visibilidad de objetos que son renderizados dentro de una escena determinando que superficies estan ocultas por otros objetos que se superponen a estas.
 

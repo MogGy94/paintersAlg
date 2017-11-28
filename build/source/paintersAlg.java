@@ -39,14 +39,21 @@ public class paintersAlg extends PApplet {
 
   private Random random;
   private Scene scene;
-  private TestComparator testComparator;
+
+  private CompareZ CX;
+  private CompareZ CY;
+  private CompareZ CZ;
+
   private List<PShape> shapes;
 
   private Pyramid[] pyramids;
 
   private boolean enableZBuffer;
   private boolean shuffle;
-  private boolean sort;
+
+  private boolean sortX;
+  private boolean sortY;
+  private boolean sortZ;
 
   @Override
   public void settings() {
@@ -57,16 +64,22 @@ public class paintersAlg extends PApplet {
   public void setup() {
     random = new Random();
     scene = new Scene(this);
-    testComparator = new TestComparator(scene.camera());
+
+    CX = new CompareZ(scene.camera());
+    CY = new CompareZ(scene.camera());
+    CZ = new CompareZ(scene.camera());
+
     pyramids = new Pyramid[4*4*4];
     shapes = new ArrayList();
 
     createPyramids(4,4,4);
 
 
-    enableZBuffer = false;
+    enableZBuffer = true;
     shuffle = false;
-    sort = false;
+    sortX = false;
+    sortY = false;
+    sortZ = false;
     surface.setTitle("ENABLE_DEPTH_TEST");
     hint(ENABLE_DEPTH_TEST);
 
@@ -79,7 +92,9 @@ public class paintersAlg extends PApplet {
     background(0);
     if(shuffle)Collections.shuffle(shapes);
 
-    if(sort)Collections.sort(shapes, testComparator);
+    if(sortX)Collections.sort(shapes, CX);
+    if(sortY)Collections.sort(shapes, CY);
+    if(sortZ)Collections.sort(shapes, CZ);
 
     for (PShape shape : shapes) {
       shape(shape);
@@ -92,10 +107,25 @@ public class paintersAlg extends PApplet {
     if (key=='q' ) {
       shuffle = !shuffle;
       println("shuffle");
+      //if(shuffle)Collections.shuffle(shapes);
     }
-    if (key=='w' ) {
-        sort = !sort;
-        println("sort");
+    if (key=='t' ) {
+        sortX = !sortX;
+        println("sortX "+sortX);
+        //if(sortX)Collections.sort(shapes, CX);
+
+    }
+    if (key=='y' ) {
+        sortY = !sortY;
+        println("sortY "+sortY);
+        //if(sortY)Collections.sort(shapes, CY);
+
+    }
+    if (key=='u' ) {
+        sortZ = !sortZ;
+        println("sortZ "+sortZ);
+        //if(sortZ)Collections.sort(shapes, CZ);
+
     }
 
     if (key==' ' ) {
@@ -135,11 +165,22 @@ public class paintersAlg extends PApplet {
 
 
 
-public class TestComparator implements Comparator<PShape> {
+public int bub(float a ,float b ){
+  if (a>b){
+    return 1;
+  }
+    else if (a==b){
+      return 0;
+    }
+  return -1;
+}
+
+
+public class CompareX implements Comparator<PShape> {
 
   private Camera camera;
 
-  public TestComparator(Camera camera) {
+  public CompareX(Camera camera) {
     super();
     this.camera = camera;
   }
@@ -157,11 +198,62 @@ public class TestComparator implements Comparator<PShape> {
     PVector a = o1.getVertex(0);
     PVector b = o2.getVertex(0);
 
-    if (a.z>b.z)
-      return 1;
-    return -1;
+    return bub(a.x,b.x);
+  }
+}
+
+
+  public class CompareY implements Comparator<PShape> {
+
+    private Camera camera;
+
+    public CompareY(Camera camera) {
+      super();
+      this.camera = camera;
+    }
+
+    public Camera getCamera() {
+      return camera;
+    }
+
+    public void setCamera(Camera camera) {
+      this.camera = camera;
+    }
+
+    @Override
+    public int compare(PShape o1, PShape o2) {
+      PVector a = o1.getVertex(0);
+      PVector b = o2.getVertex(0);
+      println(a.y+" "+b.y);
+      return bub(a.y,b.y);
+
+    }
+}
+public class CompareZ implements Comparator<PShape> {
+
+  private Camera camera;
+
+  public CompareZ(Camera camera) {
+    super();
+    this.camera = camera;
   }
 
+  public Camera getCamera() {
+    return camera;
+  }
+
+  public void setCamera(Camera camera) {
+    this.camera = camera;
+  }
+
+  @Override
+  public int compare(PShape o1, PShape o2) {
+    PVector a = o1.getVertex(0);
+    PVector b = o2.getVertex(0);
+
+    return bub(a.z,b.z);
+
+  }
 }
  class Pyramid{
   PVector p1 ;
@@ -173,6 +265,7 @@ public class TestComparator implements Comparator<PShape> {
   PShape face2;
   PShape face3;
   PShape face4;
+
 
     public  Pyramid (int x, int y, int z) {
        p1 = new PVector(x + random.nextInt(20), y + random.nextInt(10), z);
@@ -186,6 +279,9 @@ public class TestComparator implements Comparator<PShape> {
       face4 = createFace(p2,p4,p3);
 
 
+
+      //face5 =
+
       }
     public PShape createFace(PVector k1,PVector k2 ,PVector k3){
       PShape face = createShape();
@@ -196,10 +292,65 @@ public class TestComparator implements Comparator<PShape> {
       face.endShape();
 
       shapes.add(face);
-      
+
       return face;
     }
   }
+public class MyQuickSort {
+
+    private int array[];
+    private int length;
+
+    public void sort(int[] inputArr) {
+
+        if (inputArr == null || inputArr.length == 0) {
+            return;
+        }
+        this.array = inputArr;
+        length = inputArr.length;
+        quickSort(0, length - 1);
+    }
+
+    private void quickSort(int lowerIndex, int higherIndex) {
+
+        int i = lowerIndex;
+        int j = higherIndex;
+        // calculate pivot number, I am taking pivot as middle index number
+        int pivot = array[lowerIndex+(higherIndex-lowerIndex)/2];
+        // Divide into two arrays
+        while (i <= j) {
+            /**
+             * In each iteration, we will identify a number from left side which
+             * is greater then the pivot value, and also we will identify a number
+             * from right side which is less then the pivot value. Once the search
+             * is done, then we exchange both numbers.
+             */
+            while (array[i] < pivot) {
+                i++;
+            }
+            while (array[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                exchangeNumbers(i, j);
+                //move index to next position on both sides
+                i++;
+                j--;
+            }
+        }
+        // call quickSort() method recursively
+        if (lowerIndex < j)
+            quickSort(lowerIndex, j);
+        if (i < higherIndex)
+            quickSort(i, higherIndex);
+    }
+
+    private void exchangeNumbers(int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+  }  
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "paintersAlg" };
     if (passedArgs != null) {
